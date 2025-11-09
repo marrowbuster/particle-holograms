@@ -1,0 +1,4 @@
+name: particle-holograms
+version: '0.0.1-ALPHA'
+main: com.marrowbuster.particleHolograms.ParticleHolograms
+api-version: '1.21'
