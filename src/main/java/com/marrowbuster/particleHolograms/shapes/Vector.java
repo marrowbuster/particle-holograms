@@ -119,14 +119,22 @@ public class Vector {
         return Math.sqrt((this.getX() * this.getX()) + (this.getY() * this.getY()) + (this.getZ() * this.getZ()));
     }
 
-    public Vector normalise() {
+    public Vector normalise() throws IllegalArgumentException {
+        double magnitude = this.magnitude();
+        if (magnitude == 0) {
+            throw new IllegalArgumentException("Can't normalise a zero vector!");
+        }
         return new Vector(this.getX() / this.magnitude(),
                 this.getY() / this.magnitude(),
                 this.getZ() / this.magnitude());
     }
 
-    public Vector normalize() {
-        return normalise();
+    public Vector normalize() throws IllegalArgumentException {
+        try {
+            return normalise();
+        } catch (IllegalArgumentException illegalArgumentException) {
+            throw new IllegalArgumentException("Can't normalize a zero vector!");
+        }
     }
 
     public static Vector of(List<? extends Number> coords) throws IllegalArgumentException {
@@ -165,7 +173,7 @@ public class Vector {
     }
 
     private static void validateKeys(Set<? extends CharSequence> keys) {
-        if (!keys.containsAll(VALID_KEYS)) {
+        if (!keys.equals(VALID_KEYS)) {
             throw new IllegalArgumentException(("Map needs \"x\", \"y\", and \"z\" values. Those names."));
         }
     }
