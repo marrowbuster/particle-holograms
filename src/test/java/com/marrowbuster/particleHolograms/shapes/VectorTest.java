@@ -225,4 +225,11 @@ public class VectorTest {
                 "y", 2d,
                 "z", 3d), v1.toMap());
     }
+
+    @Test
+    @DisplayName("[1, 2, 3].invert() = [-1, -2, -3]")
+    void InvertsVector() {
+        Vector v1 = new Vector(1, 2, 3);
+        assertEquals(new Vector(-1, -2, -3), v1.invert());
+    }
 }

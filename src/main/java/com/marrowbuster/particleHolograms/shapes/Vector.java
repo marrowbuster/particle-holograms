@@ -137,6 +137,10 @@ public class Vector {
         }
     }
 
+    public Vector invert() {
+        return new Vector(this.scale(-1));
+    }
+
     public static Vector of(List<? extends Number> coords) throws IllegalArgumentException {
         validateCoords(coords);
         return new Vector(coords.get(0).doubleValue(),

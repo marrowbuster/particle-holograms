@@ -4,5 +4,5 @@ import java.util.List;
 
 public interface Renderable {
     List<Vector> getVertexNormals();
-    List<Vector> getFaceNormals();
+    List<Vector> getTriangleNormals();
 }
