@@ -13,6 +13,8 @@ public class Vector {
     @Getter
     private final double z;
 
+    private static final double EPSILON = 1e-9;
+
     public static final Set<? extends CharSequence> VALID_KEYS = Set.of("x", "y", "z");
 
 
@@ -124,9 +126,9 @@ public class Vector {
         if (magnitude == 0) {
             throw new IllegalArgumentException("Can't normalise a zero vector!");
         }
-        return new Vector(this.getX() / this.magnitude(),
-                this.getY() / this.magnitude(),
-                this.getZ() / this.magnitude());
+        return new Vector(this.getX() / magnitude,
+                this.getY() / magnitude,
+                this.getZ() / magnitude);
     }
 
     public Vector normalize() throws IllegalArgumentException {
@@ -138,7 +140,7 @@ public class Vector {
     }
 
     public Vector invert() {
-        return new Vector(this.scale(-1));
+        return scale(-1);
     }
 
     public static Vector of(List<? extends Number> coords) throws IllegalArgumentException {
@@ -196,9 +198,9 @@ public class Vector {
             return true;
         }
 
-        return (this.getX() == other.getX()) &&
-                (this.getY() == other.getY()) &&
-                (this.getZ() == other.getZ());
+        return Math.abs(this.getX() - other.getX()) < EPSILON &&
+                Math.abs(this.getY() - other.getY()) < EPSILON &&
+                Math.abs(this.getZ() - other.getZ()) < EPSILON;
     }
 
     @Override

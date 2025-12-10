@@ -3,16 +3,20 @@ package com.marrowbuster.particleHolograms.shapes;
 import java.util.List;
 
 public class Tetrahedron extends Mesh<Tetrahedron> {
-    public static final List<Vector> BASE_VECTORS = List.of(new Vector(1/Math.sqrt(3), 1/Math.sqrt(3), 1/Math.sqrt(3)),
-            new Vector(-1/Math.sqrt(3), -1/Math.sqrt(3), 1/Math.sqrt(3)),
-            new Vector(-1/Math.sqrt(3), 1/Math.sqrt(3), -1/Math.sqrt(3)),
-            new Vector(1/Math.sqrt(3), -1/Math.sqrt(3), -1/Math.sqrt(3)));
+
+    private static final double N = 1.0 / Math.sqrt(3.0);
+
+    public static final List<Vector> BASE_VECTORS = List.of(
+            new Vector( N,  N,  N),
+            new Vector(-N, -N,  N),
+            new Vector(-N,  N, -N),
+            new Vector( N, -N, -N));
 
     public static final List<Triangle> BASE_TRIANGLES = List.of(
-            new Triangle(List.of(BASE_VECTORS.get(0), BASE_VECTORS.get(1), BASE_VECTORS.get(2))),
-            new Triangle(List.of(BASE_VECTORS.get(0), BASE_VECTORS.get(2), BASE_VECTORS.get(3))),
-            new Triangle(List.of(BASE_VECTORS.get(0), BASE_VECTORS.get(3), BASE_VECTORS.get(1))),
-            new Triangle(List.of(BASE_VECTORS.get(1), BASE_VECTORS.get(3), BASE_VECTORS.get(2)))
+            new Triangle(0, 1, 2),
+            new Triangle(0, 2, 3),
+            new Triangle(0, 3, 1),
+            new Triangle(1, 3, 2)
     );
 
     public static final int NUMBER_OF_FACES = 4;

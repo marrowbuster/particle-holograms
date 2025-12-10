@@ -22,19 +22,27 @@ public abstract class Mesh<Geometry extends Mesh<Geometry>> {
             for (int i = 0; i < this.vectors.size(); i++) {
                 transformedVectors.add(vectorOperation.apply(this.vectors.get(i), i));
             }
-        return createNew(transformedVectors, recalculateTriangles(transformedVectors));
+        return createNew(transformedVectors, triangles);
     }
 
-    protected List<Triangle> recalculateTriangles(List<Vector> transformedVectors) {
-        List<Triangle> recalculatedTriangles = new ArrayList<>(triangles.size());
-        for (Triangle t : triangles) {
-            recalculatedTriangles.add(new Triangle(
-                    transformedVectors.get(vectors.indexOf(t.v1())),
-                    transformedVectors.get(vectors.indexOf(t.v2())),
-                    transformedVectors.get(vectors.indexOf(t.v3()))
-            ));
-        }
-        return recalculatedTriangles;
+    public Vector calculateNormal(Triangle triangle) {
+        Vector v1 = vectors.get(triangle.p1());
+        Vector v2 = vectors.get(triangle.p2());
+        Vector v3 = vectors.get(triangle.p3());
+
+        return v2.subtract(v1).cross(v3.subtract(v1)).normalise();
+    }
+
+    public Vector calculateCentroid(Triangle triangle) {
+        Vector v1 = vectors.get(triangle.p1());
+        Vector v2 = vectors.get(triangle.p2());
+        Vector v3 = vectors.get(triangle.p3());
+
+        return new Vector(
+                (v1.getX() + v2.getX() + v3.getX()) / 3,
+                (v1.getY() + v2.getY() + v3.getY()) / 3,
+                (v1.getZ() + v2.getZ() + v3.getZ()) / 3
+                );
     }
 
     protected abstract Geometry createNew(List<Vector> vectors, List<Triangle> triangles);

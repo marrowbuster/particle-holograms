@@ -2,58 +2,33 @@ package com.marrowbuster.particleHolograms.shapes;
 
 import java.util.List;
 
-public class Cube extends Hexahedron {
+public class Cube extends Hexahedron<Cube> {
+
+    private static final double N = 1.0 / Math.sqrt(3.0);
     
-    public static final List<Vector> BASE_VECTORS = List.of(new Vector(1/Math.sqrt(3), 1/Math.sqrt(3), 1/Math.sqrt(3)),
-            new Vector(1/Math.sqrt(3), -1/Math.sqrt(3), 1/Math.sqrt(3)),
-            new Vector(1/Math.sqrt(3), -1/Math.sqrt(3), -1/Math.sqrt(3)),
-            new Vector(1/Math.sqrt(3), 1/Math.sqrt(3), -1/Math.sqrt(3)),
-            new Vector(-1/Math.sqrt(3), 1/Math.sqrt(3), -1/Math.sqrt(3)),
-            new Vector(-1/Math.sqrt(3), -1/Math.sqrt(3), -1/Math.sqrt(3)),
-            new Vector(-1/Math.sqrt(3), -1/Math.sqrt(3), 1/Math.sqrt(3)),
-            new Vector(-1/Math.sqrt(3), 1/Math.sqrt(3), 1/Math.sqrt(3)));
+    public static final List<Vector> BASE_VECTORS = List.of(
+            new Vector( N,  N,  N),
+            new Vector( N, -N,  N),
+            new Vector( N, -N, -N),
+            new Vector( N,  N, -N),
+            new Vector(-N,  N, -N),
+            new Vector(-N, -N, -N),
+            new Vector(-N, -N,  N),
+            new Vector(-N,  N,  N));
 
     public static final List<Triangle> BASE_TRIANGLES = List.of(
-            new Triangle(
-                    BASE_VECTORS.get(1).subtract(BASE_VECTORS.get(0)),
-                    BASE_VECTORS.get(3).subtract(BASE_VECTORS.get(1)),
-                    BASE_VECTORS.get(0).subtract(BASE_VECTORS.get(3))
-            ),
-            new Triangle(
-                    BASE_VECTORS.get(3).subtract(BASE_VECTORS.get(2)),
-                    BASE_VECTORS.get(1).subtract(BASE_VECTORS.get(3)),
-                    BASE_VECTORS.get(2).subtract(BASE_VECTORS.get(1))
-            ),
-            new Triangle(
-                    BASE_VECTORS.get(7).subtract(BASE_VECTORS.get(6)),
-                    BASE_VECTORS.get(5).subtract(BASE_VECTORS.get(7)),
-                    BASE_VECTORS.get(6).subtract(BASE_VECTORS.get(5))
-            ),
-            new Triangle(
-                    BASE_VECTORS.get(5).subtract(BASE_VECTORS.get(4)),
-                    BASE_VECTORS.get(7).subtract(BASE_VECTORS.get(5)),
-                    BASE_VECTORS.get(4).subtract(BASE_VECTORS.get(7))
-            ),
-            new Triangle(
-                    BASE_VECTORS.get(0).subtract(BASE_VECTORS.get(1)),
-                    BASE_VECTORS.get(6).subtract(BASE_VECTORS.get(0)),
-                    BASE_VECTORS.get(1).subtract(BASE_VECTORS.get(6))
-            ),
-            new Triangle(
-                    BASE_VECTORS.get(6).subtract(BASE_VECTORS.get(7)),
-                    BASE_VECTORS.get(0).subtract(BASE_VECTORS.get(6)),
-                    BASE_VECTORS.get(7).subtract(BASE_VECTORS.get(0))
-            ),
-            new Triangle(
-                    BASE_VECTORS.get(0).subtract(BASE_VECTORS.get(4)),
-                    BASE_VECTORS.get(7).subtract(BASE_VECTORS.get(0)),
-                    BASE_VECTORS.get(4).subtract(BASE_VECTORS.get(7))
-            ),
-            new Triangle(
-                    BASE_VECTORS.get(4).subtract(BASE_VECTORS.get(3)),
-                    BASE_VECTORS.get(0).subtract(BASE_VECTORS.get(4)),
-                    BASE_VECTORS.get(3).subtract(BASE_VECTORS.get(0))
-            )
+            new Triangle(0, 1, 6),
+            new Triangle(0, 6, 7),
+            new Triangle(0, 3, 2),
+            new Triangle(0, 2, 1),
+            new Triangle(3, 4, 5),
+            new Triangle(3, 5, 2),
+            new Triangle(7, 6, 5),
+            new Triangle(7, 5, 4),
+            new Triangle(0, 7, 4),
+            new Triangle(0, 4, 3),
+            new Triangle(1, 2, 5),
+            new Triangle(1, 5, 6)
             );
 
     public static final int NUMBER_OF_VERTICES = 8;
@@ -66,6 +41,7 @@ public class Cube extends Hexahedron {
         super(BASE_VECTORS, BASE_TRIANGLES);
     }
 
+    @Override
     public Cube createNew(List<Vector> vectors, List<Triangle> triangles) {
         return new Cube(vectors, triangles);
     }
