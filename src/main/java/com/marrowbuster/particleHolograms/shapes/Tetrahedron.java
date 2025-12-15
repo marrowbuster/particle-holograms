@@ -10,7 +10,8 @@ public class Tetrahedron extends Mesh<Tetrahedron> {
             new Vector( N,  N,  N),
             new Vector(-N, -N,  N),
             new Vector(-N,  N, -N),
-            new Vector( N, -N, -N));
+            new Vector( N, -N, -N)
+    );
 
     public static final List<Triangle> BASE_TRIANGLES = List.of(
             new Triangle(0, 1, 2),
