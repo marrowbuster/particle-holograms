@@ -16,14 +16,6 @@ public abstract class BaseMesh {
         this.triangles = triangles;
     }
 
-    public Vector calculateNormal(Triangle triangle) {
-        Vector v1 = this.vectors.get(triangle.p1());
-        Vector v2 = this.vectors.get(triangle.p2());
-        Vector v3 = this.vectors.get(triangle.p3());
-
-        return v2.subtract(v1).cross(v3.subtract(v1)).normalise();
-    }
-
     public Vector calculateCentroid(Triangle triangle) {
         Vector v1 = this.vectors.get(triangle.p1());
         Vector v2 = this.vectors.get(triangle.p2());
@@ -34,6 +26,23 @@ public abstract class BaseMesh {
                 (v1.y() + v2.y() + v3.y()) / 3,
                 (v1.z() + v2.z() + v3.z()) / 3
         );
+    }
+
+    public Vector calculateNormal(Triangle triangle) {
+        Vector v1 = this.vectors.get(triangle.p1());
+        Vector v2 = this.vectors.get(triangle.p2());
+        Vector v3 = this.vectors.get(triangle.p3());
+
+        return v2.subtract(v1).cross(v3.subtract(v1)).normalise();
+    }
+
+    public List<Vector> getTriangleNormals() {
+        List<Vector> triangleNormals = new ArrayList<>(this.triangles.size());
+        for (Triangle triangle : this.triangles) {
+            triangleNormals.add(calculateNormal(triangle));
+        }
+
+        return triangleNormals;
     }
 
     public List<Vector> getVertexNormals() {
@@ -52,14 +61,5 @@ public abstract class BaseMesh {
 
         vertexNormals.replaceAll(vector -> vector.magnitude() == 0 ? vector : vector.normalise());
         return vertexNormals;
-    }
-
-    public List<Vector> getTriangleNormals() {
-        List<Vector> triangleNormals = new ArrayList<>(this.triangles.size());
-        for (Triangle triangle : this.triangles) {
-            triangleNormals.add(calculateNormal(triangle));
-        }
-
-        return triangleNormals;
     }
 }

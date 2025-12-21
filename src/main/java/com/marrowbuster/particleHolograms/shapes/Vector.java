@@ -1,5 +1,7 @@
 package com.marrowbuster.particleHolograms.shapes;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.*;
 
 public record Vector(double x, double y, double z) {
@@ -23,18 +25,6 @@ public record Vector(double x, double y, double z) {
                 this.z() + z);
     }
 
-    public Vector add(Number x, Number y, Number z) {
-        return new Vector(this.x() + x.doubleValue(),
-                this.y() + y.doubleValue(),
-                this.z() + z.doubleValue());
-    }
-
-    public Vector add(Vector other) {
-        return new Vector(this.x() + other.x(),
-                this.y() + other.y(),
-                this.z() + other.z());
-    }
-
     public Vector add(List<? extends Number> coords) throws IllegalArgumentException {
         validateCoords(coords);
         return new Vector(this.x() + coords.get(0).doubleValue(),
@@ -51,48 +41,16 @@ public record Vector(double x, double y, double z) {
                 this.z() + coords.get("z").doubleValue());
     }
 
-    public Vector subtract(double x, double y, double z) {
-        return new Vector(this.x() - x,
-                this.y() - y,
-                this.z() - z);
+    public Vector add(Number x, Number y, Number z) {
+        return new Vector(this.x() + x.doubleValue(),
+                this.y() + y.doubleValue(),
+                this.z() + z.doubleValue());
     }
 
-    public Vector subtract(Number x, Number y, Number z) {
-        return new Vector(this.x() - x.doubleValue(),
-                this.y() - y.doubleValue(),
-                this.z() - z.doubleValue());
-    }
-
-    public Vector subtract(Vector other) {
-        return new Vector(this.x() - other.x(),
-                this.y() - other.y(),
-                this.z() - other.z());
-    }
-
-    public Vector subtract(List<? extends Number> coords) {
-        validateCoords(coords);
-        return new Vector(this.x() - coords.get(0).doubleValue(),
-                this.y() - coords.get(1).doubleValue(),
-                this.z() - coords.get(2).doubleValue());
-    }
-
-    public Vector subtract(Map<String, ? extends Number> coords) throws IllegalArgumentException {
-        validateKeys(coords.keySet());
-        validateCoords(coords.values());
-
-        return new Vector(this.x() - coords.get("x").doubleValue(),
-                this.y() - coords.get("y").doubleValue(),
-                this.z() - coords.get("z").doubleValue());
-    }
-
-    public Vector scale(Number factor) {
-        return new Vector(this.x() * factor.doubleValue(),
-                this.y() * factor.doubleValue(),
-                this.z() * factor.doubleValue());
-    }
-
-    public double dot(Vector other) {
-        return (this.x() * other.x()) + (this.y() * other.y()) + (this.z() * other.z());
+    public Vector add(Vector other) {
+        return new Vector(this.x() + other.x(),
+                this.y() + other.y(),
+                this.z() + other.z());
     }
 
     public Vector cross(Vector other) {
@@ -101,6 +59,13 @@ public record Vector(double x, double y, double z) {
                 (this.x() * other.y()) - (this.y() * other.x()));
     }
 
+    public double dot(Vector other) {
+        return (this.x() * other.x()) + (this.y() * other.y()) + (this.z() * other.z());
+    }
+
+    public Vector invert() {
+        return scale(-1);
+    }
 
     public double magnitude() {
         return Math.sqrt((this.x() * this.x()) + (this.y() * this.y()) + (this.z() * this.z()));
@@ -124,10 +89,6 @@ public record Vector(double x, double y, double z) {
         }
     }
 
-    public Vector invert() {
-        return scale(-1);
-    }
-
     public static Vector of(List<? extends Number> coords) throws IllegalArgumentException {
         validateCoords(coords);
         return new Vector(coords.get(0).doubleValue(),
@@ -144,6 +105,50 @@ public record Vector(double x, double y, double z) {
                 coords.get("z").doubleValue());
     }
 
+    public Vector scale(Number factor) {
+        return new Vector(this.x() * factor.doubleValue(),
+                this.y() * factor.doubleValue(),
+                this.z() * factor.doubleValue());
+    }
+
+    public Vector subtract(double x, double y, double z) {
+        return new Vector(this.x() - x,
+                this.y() - y,
+                this.z() - z);
+    }
+
+    public Vector subtract(List<? extends Number> coords) {
+        validateCoords(coords);
+        return new Vector(this.x() - coords.get(0).doubleValue(),
+                this.y() - coords.get(1).doubleValue(),
+                this.z() - coords.get(2).doubleValue());
+    }
+
+    public Vector subtract(Map<String, ? extends Number> coords) throws IllegalArgumentException {
+        validateKeys(coords.keySet());
+        validateCoords(coords.values());
+
+        return new Vector(this.x() - coords.get("x").doubleValue(),
+                this.y() - coords.get("y").doubleValue(),
+                this.z() - coords.get("z").doubleValue());
+    }
+
+    public Vector subtract(Number x, Number y, Number z) {
+        return new Vector(this.x() - x.doubleValue(),
+                this.y() - y.doubleValue(),
+                this.z() - z.doubleValue());
+    }
+
+    public Vector subtract(Vector other) {
+        return new Vector(this.x() - other.x(),
+                this.y() - other.y(),
+                this.z() - other.z());
+    }
+
+    public List<Double> toList() {
+        return List.of(this.x(), this.y(), this.z());
+    }
+
     public Map<String, Double> toMap() {
         Map<String, Double> coords = new HashMap<String, Double>();
         coords.put("x", this.x());
@@ -151,10 +156,6 @@ public record Vector(double x, double y, double z) {
         coords.put("z", this.z());
 
         return coords;
-    }
-
-    public List<Double> toList() {
-        return List.of(this.x(), this.y(), this.z());
     }
 
     private static void validateCoords(Collection<? extends Number> coords) throws IllegalArgumentException {
@@ -189,7 +190,7 @@ public record Vector(double x, double y, double z) {
     }
 
     @Override
-    public String toString() {
+    public @NotNull String toString() {
         return "[" + this.x() + "," + this.y() + "," + this.z() + "]";
     }
 

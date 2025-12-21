@@ -33,7 +33,7 @@ public class Cube extends Hexahedron<Cube> {
 
     public static final int NUMBER_OF_VERTICES = 8;
 
-    public Cube(List<Vector> vectors, List<Triangle> triangles) {
+    private Cube(List<Vector> vectors, List<Triangle> triangles) {
         super(vectors, triangles);
     }
 
