@@ -6,9 +6,11 @@ import java.util.*;
 
 public record Vector(double x, double y, double z) {
 
-    private static final double EPSILON = 1e-9;
+    public static final double EPSILON = 1e-3;
 
     public static final Set<? extends CharSequence> VALID_KEYS = Set.of("x", "y", "z");
+
+    public static final Vector ZERO = new Vector(0, 0, 0);
 
 
     public Vector(Vector other) {
@@ -105,6 +107,38 @@ public record Vector(double x, double y, double z) {
                 coords.get("z").doubleValue());
     }
 
+    public Vector rotate(double yaw, double pitch, double roll) {
+        double resX = x;
+        double resY = y;
+        double resZ = z;
+
+        if (pitch != 0) {
+            double cos = Math.cos(pitch);
+            double sin = Math.sin(pitch);
+            double oldY = resY;
+            resY = oldY * cos - resZ * sin;
+            resZ = oldY * sin + resZ * cos;
+        }
+
+        if (yaw != 0) {
+            double cos = Math.cos(yaw);
+            double sin = Math.sin(yaw);
+            double oldX = resX;
+            resX = oldX * cos + resZ * sin;
+            resZ = -oldX * sin + resZ * cos;
+        }
+
+        if (roll != 0) {
+            double cos = Math.cos(roll);
+            double sin = Math.sin(roll);
+            double oldX = resX;
+            resX = oldX * cos - resY * sin;
+            resY = oldX * sin + resY * cos;
+        }
+
+        return new Vector(resX, resY, resZ);
+    }
+
     public Vector scale(Number factor) {
         return new Vector(this.x() * factor.doubleValue(),
                 this.y() * factor.doubleValue(),
@@ -170,23 +204,26 @@ public record Vector(double x, double y, double z) {
         }
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
+    public boolean isClose(Vector other, double epsilon) {
+        if (other == null) {
             return false;
         }
 
-        if (!(obj instanceof Vector other)) {
-            return false;
-        }
+        return Math.abs(this.x() - other.x()) < epsilon &&
+                Math.abs(this.y() - other.y()) < epsilon &&
+                Math.abs(this.z() - other.z()) < epsilon;
+    }
 
-        if (obj == this) {
-            return true;
-        }
+    public boolean isClose(Vector other) {
+        return isClose(other, EPSILON);
+    }
 
-        return Math.abs(this.x() - other.x()) < EPSILON &&
-                Math.abs(this.y() - other.y()) < EPSILON &&
-                Math.abs(this.z() - other.z()) < EPSILON;
+    public boolean isWithinDistance(Vector other, double maxDistance) {
+        double dx = this.x() - other.x();
+        double dy = this.y() - other.y();
+        double dz = this.z() - other.z();
+
+        return (dx * dx + dy * dy + dz * dz) < (maxDistance * maxDistance);
     }
 
     @Override
