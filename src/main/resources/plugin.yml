@@ -1,4 +1,8 @@
 name: particle-holograms
 version: '0.0.1-ALPHA'
-main: com.marrowbuster.particleHolograms.ParticleHolograms
+main: com.marrowbuster.particleHolograms.core.ParticleHolograms
 api-version: '1.21'
+commands:
+  hologram:
+    description: Spawns a particle hologram.
+    usage: /hologram <shape> <particle> <size>

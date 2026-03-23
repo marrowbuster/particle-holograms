@@ -4,7 +4,7 @@ import lombok.Getter;
 
 import java.util.*;
 
-public abstract class BaseMesh {
+public abstract class BaseMesh implements Renderable {
     @Getter
     protected final List<Vector> vectors;
     @Getter
@@ -87,7 +87,7 @@ public abstract class BaseMesh {
                 .toList();
     }
 
-    public List<Vector> getWireframePoints(double particleDistance) {
+    public List<Vector> getWireframePoints(double step) {
         List<Vector> points = new ArrayList<>();
         Set<Edge> processedEdges = new HashSet<>();
 
@@ -103,7 +103,7 @@ public abstract class BaseMesh {
                     Vector vStart = this.vectors.get(edge.p1());
                     Vector vEnd = this.vectors.get(edge.p2());
 
-                    addEdgePoints(points, vStart, vEnd, particleDistance);
+                    addEdgePoints(points, vStart, vEnd, step);
                 }
             }
         }
