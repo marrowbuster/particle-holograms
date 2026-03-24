@@ -2,6 +2,7 @@ package com.marrowbuster.particleHolograms.core;
 
 import com.marrowbuster.particleHolograms.shapes.BaseMesh;
 import com.marrowbuster.particleHolograms.shapes.Vector;
+import lombok.Getter;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Particle;
@@ -31,8 +32,14 @@ public class MeshHologram implements Hologram {
 
     @Override
     public void spawn() {
-        JavaPlugin plugin = JavaPlugin.getProvidingPlugin(MeshHologram.class);
-        this.task = plugin.getServer().getScheduler().runTaskTimer(plugin, this::tick, 0, 1);
+        if (this.task != null) {
+            this.task.cancel();
+        }
+
+        ParticleHolograms plugin = ParticleHolograms.getInstance();
+        if (plugin != null && plugin.isEnabled()) {
+            this.task = plugin.getServer().getScheduler().runTaskTimer(plugin, this::tick, 0, 1);
+        }
     }
 
     @Override
@@ -53,6 +60,11 @@ public class MeshHologram implements Hologram {
         if (task != null) {
             task.cancel();
         }
+    }
+
+    @Override
+    public BaseMesh getMesh() {
+        return mesh;
     }
 
     @Override

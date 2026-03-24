@@ -8,6 +8,7 @@ import io.papermc.paper.command.brigadier.CommandSourceStack;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Particle;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -19,10 +20,23 @@ public class HologramCommand implements BasicCommand {
         this.plugin = plugin;
     }
     @Override
-    public void execute(CommandSourceStack source, String[] args) {
+    public void execute(@NotNull CommandSourceStack source, String[] args) {
         if (args[0].equalsIgnoreCase("clear")) {
             plugin.getHologramManager().clearAll();
             source.getSender().sendRichMessage("<green>All holograms purged.");
+            return;
+        } else if (args[0].equalsIgnoreCase("list")) {
+            plugin.getHologramManager().getActiveHolograms().forEach(
+                    (uuid, hologram) ->
+                        source
+                                .getSender()
+                                .sendRichMessage("<green>UUID: " +
+                                        uuid.toString() +
+                                        ", mesh is " +
+                                        hologram
+                                                .getMesh()
+                                                .getClass()
+                                                .getSimpleName()));
             return;
         } else if (args.length < 3) {
             source.getSender().sendRichMessage("<red>Usage: /hologram <shape> <particle> <size>");
@@ -44,7 +58,7 @@ public class HologramCommand implements BasicCommand {
                     .withColor(Color.AQUA)
                     .build();
 
-            hologram.spawn();
+            plugin.getHologramManager().register(hologram);
             source.getSender().sendRichMessage("<green>Spawned " + shape + " hologram!");
         } catch (IllegalArgumentException e) {
             source.getSender().sendRichMessage("<red>Invalid particle or shape.");

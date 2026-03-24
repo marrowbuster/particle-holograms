@@ -2,10 +2,12 @@ package com.marrowbuster.particleHolograms.core;
 
 import com.marrowbuster.particleHolograms.command.HologramCommand;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
+import lombok.Getter;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class ParticleHolograms extends JavaPlugin {
 
+    @Getter
     public static ParticleHolograms instance;
     private HologramManager hologramManager;
 
